@@ -155,6 +155,17 @@ server {
                 include /etc/nginx/vhost.d/default_location;
                 {{ end }}
 	}
+
+	location /nginx_status {
+		# Turn on nginx stats
+		stub_status on;
+		# I do not need logs for stats
+		access_log   off;
+		# Security: Only allow access from 172.17.0.0/16 subnet #
+		allow 172.17.0.0/16;
+		# Send rest of the world to /dev/null #
+		deny all;
+	}
 }
 {{ else }}
 
@@ -180,6 +191,17 @@ server {
                 {{ else if (exists "/etc/nginx/vhost.d/default_location") }}
                 include /etc/nginx/vhost.d/default_location;
                 {{ end }}
+	}
+
+	location /nginx_status {
+		# Turn on nginx stats
+		stub_status on;
+		# I do not need logs for stats
+		access_log   off;
+		# Security: Only allow access from 172.17.0.0/16 subnet #
+		allow 172.17.0.0/16;
+		# Send rest of the world to /dev/null #
+		deny all;
 	}
 }
 
